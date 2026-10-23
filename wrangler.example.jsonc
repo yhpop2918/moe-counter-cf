@@ -1,0 +1,44 @@
+// ============================================================
+// wrangler.example.jsonc —— 公开模板（不含任何个人配置）
+//
+// 使用方法（见 README 部署步骤）：
+//   1. 复制本文件并重命名为 wrangler.jsonc
+//      Windows:  Copy-Item wrangler.example.jsonc wrangler.jsonc
+//   2. 用编辑器打开 wrangler.jsonc
+//   3. 把 "YOUR_D1_DATABASE_ID" 替换成你自己的 database_id
+//      （由 npx wrangler d1 create moe-counter 命令输出）
+// ============================================================
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Worker 名称（会生成 https://moe-counter.<你的子域>.workers.dev）
+  "name": "moe-counter",
+
+  // 入口文件：整个 Worker 的起点
+  "main": "src/index.ts",
+
+  // 兼容日期：填当前日期即可，代表启用该日期之前的所有 API
+  "compatibility_date": "2026-10-01",
+
+  // ---------- 静态资产（等价于原来的 public/ 目录）----------
+  // ./public 目录下的所有文件由 Cloudflare 直接免费提供
+  // （静态请求不计入 10 万/日 的 Worker 额度）
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  // ---------- D1 数据库绑定（等价于原来的 SQLite data.db）----------
+  "d1_databases": [
+    {
+      "binding": "DB",                    // Worker 代码里用 env.DB 访问数据库
+      "database_name": "moe-counter",
+      "database_id": "YOUR_D1_DATABASE_ID" // ← 部署前必须替换！
+    }
+  ],
+
+  // 开启观测：方便在控制台看请求日志
+  "observability": {
+    "enabled": true
+  }
+}
