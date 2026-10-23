@@ -61,7 +61,7 @@ moe-counter-cf/
 
 ### 1. 获取代码并安装依赖
 ```bash
-git clone https://github.com/<你的用户名>/moe-counter-cf.git
+git clone https://github.com/yhpop2918/moe-counter-cf.git
 cd moe-counter-cf
 npm install
 ```
@@ -104,12 +104,8 @@ npm run deploy
 4. 等 TLS 证书自动签发（几分钟），即可用 `https://count.example.com` 访问
    （国内访问体验通常比 `*.workers.dev` 直连好）
 
-### 8. 切换徽章 URL
-把博客 / README 里的徽章地址改成：
-```
-https://你的域名/api/counter?name=你的计数器名&theme=miku&length=7
-```
-验证：
+### 8. 示例 URL
+
 ```bash
 curl "https://你的域名/api/counter?name=test&theme=miku"     # 返回 SVG
 curl "https://你的域名/api/counter?name=test&num=12345"      # 指定数值
@@ -133,7 +129,7 @@ npm run db:migrate
 | `offset` | 数字间距（px） | 0 |
 | `align` | left / center / right | center |
 | `pixelate` | on / off 像素化 | off |
-| `darkmode` | on / auto / 空 | 空（不启用） |
+| `darkmode` | on / auto  | auto |
 | `base` | 基础计数，>0 时叠加 | 0 |
 | `num` | 直接指定计数值（**不累加**） | 无 |
 
@@ -188,4 +184,5 @@ npx wrangler d1 execute moe-counter --remote --command "SELECT * FROM counters"
 ## 致谢
 
 - 原版项目：[skyle1995/Moe-Counter-Go](https://github.com/skyle1995/Moe-Counter-Go)
+- 本项目部分资源基于：[journey-ad/Moe-Counter](https://github.com/journey-ad/Moe-Counter)
 - 主题素材与逻辑移植自原版仓库；商用前请查阅原仓库 License 与素材来源。
