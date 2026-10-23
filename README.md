@@ -11,7 +11,9 @@
 > `https://js.yhpop.com/api/counter?name=你的计数器名&theme=miku&length=7`
 >
 > ![miku 示例](https://js.yhpop.com/api/counter?name=github-readme-demo&theme=miku)
-
+<div align="center">
+  <img src="public/assets/img/Preview.svg" alt="SVG预览" width="500" style="margin-bottom: 20px;">
+<p style="font-size: 18px; color: #555; margin-top: 20px; line-height: 1.6; font-weight: 500;">
 ---
 
 ## 与原版的差异
