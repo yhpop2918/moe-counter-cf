@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>萌计数器！</title>
+    <meta name="description" content="萌计数器！一个可爱的访问量统计工具。提供多种风格主题，简单易用，美化你的网站访问统计。">
+    <meta name="keywords" content="访问统计,计数器,网站统计,萌计数器,萌计数器！">
+    <link rel="icon" type="image/png" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bamboo.css">
+    <link rel="stylesheet/less" href="/assets/style.less">
+    <script src="https://cdn.jsdelivr.net/npm/less"></script>
+    <style>
+        .tool {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+            .tool {
+                background-color: #242933;
+            }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 15px;
+            max-width: 100%;
+        }
+        .github {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="main_title"><i>萌计数器！</i></h1>
+
+    <h3>使用说明</h3>
+    <p>为您的计数器设置唯一ID，替换URL中的 <code>:name</code> 即可！</p>
+    
+    <h5>SVG地址</h5>
+    <code id="svg_url">/api/counter?name=:name</code>
+
+    <h5>图片标签</h5>
+    <code id="img_url">&lt;img src="/api/counter?name=:name" alt=":name" /&gt;</code>
+
+    <h5>示例：</h5>
+    <img id="example_img" src="/api/counter?name=index&theme=rule34" alt="萌计数器！">
+
+    <details id="themes">
+        <summary id="more_theme">
+            <h3>更多主题 ✨</h3>
+        </summary>
+        <p>使用查询参数 <code>theme</code>，例如：<code id="theme_url">/api/counter?name=:name&theme=3d-num</code></p>
+        <div id="theme_list"></div>
+    </details>
+
+    <h3>工具</h3>
+    <div class="tool">
+        <table>
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>说明</th>
+                    <th>值</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>唯一计数器名称</td>
+                    <td><input id="name" type="text" placeholder=":name"></td>
+                </tr>
+                <tr>
+                    <td><code>theme</code></td>
+                    <td>选择计数器主题</td>
+                    <td>
+                        <select id="theme">
+                            <option value="random" selected>* 随机</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>length</code></td>
+                    <td>设置最小长度（1-16）</td>
+                    <td><input id="length" type="number" value="7" min="1" max="32"></td>
+                </tr>
+                <tr>
+                    <td><code>scale</code></td>
+                    <td>设置图片缩放（0.1-2）</td>
+                    <td><input id="scale" type="number" value="1" min="0.1" max="2" step="0.1"></td>
+                </tr>
+                <tr>
+                    <td><code>offset</code></td>
+                    <td>设置像素偏移值（-500至500）</td>
+                    <td><input id="offset" type="number" value="0" min="-500" max="500"></td>
+                </tr>
+                <tr>
+                    <td><code>align</code></td>
+                    <td>图片对齐方式</td>
+                    <td>
+                        <select id="align">
+                            <option value="left">左对齐</option>
+                            <option value="center" selected>居中</option>
+                            <option value="right">右对齐</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>pixelate</code></td>
+                    <td>像素化模式</td>
+                    <td>
+                        <select id="pixelate">
+                            <option value="off">关闭</option>
+                            <option value="on" selected>开启</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>darkmode</code></td>
+                    <td>黑暗模式</td>
+                    <td>
+                        <select id="darkmode">
+                            <option value="auto" selected>自动</option>
+                            <option value="off">关闭</option>
+                            <option value="on">开启</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr style="user-select: auto;">
+                    <td colspan="3" style="user-select: auto;">
+                        <h4 class="caption" style="user-select: auto;">特殊选项</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><code>base</code></td>
+                    <td>基础数量</td>
+                    <td><input id="base" type="number" min="0" placeholder="填入数值.计数器以此数作为起始基数"></td>
+                </tr>
+                <tr>
+                    <td><code>num</code></td>
+                    <td>固定显示</td>
+                    <td><input id="num" type="number" min="0" placeholder="留空则正常显示计数"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button id="get">生成预览</button>
+                        <button id="generateLink">生成配置链接</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <img id="result" alt="预览结果" style="display: none;">
+        </div>
+        <div id="linkResult" style="margin-top: 15px; word-break: break-all;"></div>
+    </div>
+
+    <p class="github">
+        <a href="https://github.com/skyle1995/Moe-Counter-Go" target="_blank">源代码</a>
+    </p>
+
+    <script>
+        // 全局配置
+        const config = {
+            site: window.location.origin
+        };
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 加载主题列表
+            await loadThemes();
+            
+            // 设置示例图片URL
+            updateExampleImage();
+            
+            // 绑定生成按钮事件
+            document.getElementById('get').addEventListener('click', generatePreview);
+            
+            // 绑定生成链接按钮事件
+            document.getElementById('generateLink').addEventListener('click', generateLink);
+        });
+
+        // 加载主题列表
+        async function loadThemes() {
+            try {
+                const response = await fetch('/api/themes');
+                const data = await response.json();
+                
+                // 更新主题选择下拉菜单
+                const themeSelect = document.getElementById('theme');
+                data.themes.forEach(theme => {
+                    const option = document.createElement('option');
+                    option.value = theme;
+                    option.textContent = theme;
+                    themeSelect.appendChild(option);
+                });
+                
+                // 更新主题列表区域
+                const themeList = document.getElementById('theme_list');
+                data.themes.forEach(theme => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.dataset.theme = theme;
+                    
+                    const title = document.createElement('h5');
+                    title.textContent = theme;
+                    
+                    const img = document.createElement('img');
+                    img.alt = theme;
+                    img.src = `/api/counter?name=index&theme=${theme}&length=10&num=0123456789`;
+                    
+                    item.appendChild(title);
+                    item.appendChild(img);
+                    themeList.appendChild(item);
+                });
+            } catch (error) {
+                console.error('加载主题失败:', error);
+            }
+        }
+
+        // 更新示例图片
+        function updateExampleImage() {
+            const exampleImg = document.getElementById('example_img');
+            exampleImg.src = `${config.site}/api/counter?name=index&theme=rule34`;
+            
+            const svgUrl = document.getElementById('svg_url');
+            svgUrl.textContent = `${config.site}/api/counter?name=:name`;
+
+            const imgUrl = document.getElementById('img_url');
+            imgUrl.textContent = `<img src="${config.site}/api/counter?name=:name" alt=":name" />`;
+            
+            const themeUrl = document.getElementById('theme_url');
+            themeUrl.textContent = `${config.site}/api/counter?name=:name&theme=moebooru`;
+        }
+
+        // 生成预览
+        function generatePreview() {
+        const name = document.getElementById('name').value;
+        if (!name) {
+            alert('必须填写name！');
+            return;
+        }
+        const theme = document.getElementById('theme').value;
+        const length = document.getElementById('length').value;
+        const scale = document.getElementById('scale').value;
+        const offset = document.getElementById('offset').value;
+        const align = document.getElementById('align').value;
+        const pixelate = document.getElementById('pixelate').value;
+        const darkmode = document.getElementById('darkmode').value;
+        const base = document.getElementById('base').value;
+        const num = document.getElementById('num').value;
+        
+        // 构建查询参数
+        const params = new URLSearchParams();
+        params.append('name', name);
+        if (theme && theme !== 'random') params.append('theme', theme);
+        if (length) params.append('length', length);
+        if (scale) params.append('scale', scale);
+        if (offset) params.append('offset', offset);
+        if (align) params.append('align', align);
+        if (pixelate) params.append('pixelate', pixelate);
+        if (darkmode) params.append('darkmode', darkmode);
+        if (base) params.append('base', base);
+        if (num) params.append('num', num);
+            
+            // 更新预览图片（添加时间戳避免缓存）
+            const resultImg = document.getElementById('result');
+            const timestamp = new Date().getTime();
+            resultImg.src = `/api/counter?${params.toString()}&t=${timestamp}`;
+            resultImg.style.display = 'block';
+        }
+        
+        // 生成配置链接
+        function generateLink() {
+            const name = document.getElementById('name').value || 'demo';
+            const theme = document.getElementById('theme').value;
+            const length = document.getElementById('length').value;
+            const scale = document.getElementById('scale').value;
+            const offset = document.getElementById('offset').value;
+            const align = document.getElementById('align').value;
+        const pixelate = document.getElementById('pixelate').value;
+        const darkmode = document.getElementById('darkmode').value;
+            const base = document.getElementById('base').value;
+            
+            const params = new URLSearchParams();
+            if (name) params.append('name', name);
+            if (theme && theme !== 'random') params.append('theme', theme);
+            if (length) params.append('length', length);
+            if (scale) params.append('scale', scale);
+            if (offset) params.append('offset', offset);
+            if (align) params.append('align', align);
+        if (pixelate) params.append('pixelate', pixelate);
+        if (darkmode) params.append('darkmode', darkmode);
+            if (base) params.append('base', base);
+            
+            const link = `${config.site}/api/counter?${params.toString()}`;
+            const linkElement = document.getElementById('linkResult');
+            linkElement.innerHTML = `
+                <div style="margin-bottom: 10px;">
+                    <code id="configLink">${link}</code>
+                </div>
+                <button id="copyButton">复制链接</button>
+            `;
+            
+            // 绑定复制按钮事件
+            document.getElementById('copyButton').addEventListener('click', function() {
+                const copyText = document.getElementById('configLink');
+                const textArea = document.createElement('textarea');
+                textArea.value = copyText.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('链接已复制到剪贴板！');
+            });
+        }
+        
+        // 绑定生成链接按钮事件
+        document.getElementById('generateLink').addEventListener('click', generateLink);
+    </script>
+</body>
+</html>
