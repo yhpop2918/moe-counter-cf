@@ -5,12 +5,12 @@
 
 **个人博客量级（<10 万请求/日）全程免费、零运维**，无需再维护服务器。
 
-> 在线示例（部署者自用实例）：<https://moe.yhpop.com>
+> 在线示例 ：<https://js.yhpop.com>
 >
 > 徽章用法：
-> `https://moe.yhpop.com/api/counter?name=你的计数器名&theme=miku&length=7`
+> `https://js.yhpop.com/api/counter?name=你的计数器名&theme=miku&length=7`
 >
-> ![miku 示例](https://moe.yhpop.com/api/counter?name=github-readme-demo&theme=miku)
+> ![miku 示例](https://js.yhpop.com/api/counter?name=github-readme-demo&theme=miku)
 
 ---
 
@@ -25,7 +25,7 @@
 | 主题图片 | 本地读取 | Worker 静态资产（Cloudflare 免费分发） |
 | 额外内容 | — | 新增 `yousa-ling` 主题（gif 动图） |
 
-接口参数与响应格式和原版完全一致，博客徽章地址只需换域名即可无缝切换。
+接口参数与响应格式和原版完全一致，可无缝切换。
 
 ## 目录结构
 
@@ -50,8 +50,6 @@ moe-counter-cf/
 └── tsconfig.json
 ```
 
-> `wrangler.jsonc`（含你真实的 D1 `database_id`）已被 `.gitignore` 忽略，不会进入公开仓库；
-> 公开的是 `wrangler.example.jsonc` 模板。
 
 ## 快速部署（约 5 分钟）
 
